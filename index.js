@@ -1,16 +1,13 @@
-const { server } = require('websocket');
+const PORT = process.env.PORT || 3000;
+const INDEX = '/index.html';
 
-const app = require('express')()
+const server = express()
+  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-const http = require('http').createServer(app)
-const io = require('socket.io')(http);
-app.get('/', (req, res) => {
-  console.log('server is running') 
-  //res.send("Node Server is running. Yay!!")
-})
+  const io = socketIO(server);
 
-io.on('connection',socket => {
-    console.log('a user connected'); 
-    });
-
-server.listen(3000);
+  io.on('connection', (socket) => {
+    console.log('Client connected');
+    socket.on('disconnect', () => console.log('Client disconnected'));
+  });
