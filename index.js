@@ -1,5 +1,4 @@
 const express = require('express');
-const Logger = require('nodemon/lib/utils/log');
 const socketIO = require('socket.io');
 
 const PORT = process.env.PORT || 3000;
@@ -27,8 +26,8 @@ const server = express()
     });
 
     socket.on('message', args => {
-      if (receiver in sockets) {
-        sockets[receiver].emit('message', { 'sender': username, 'content': args['content'] });
+      if (args['receiver'] in sockets) {
+        sockets[args['receiver']].emit('message', { 'sender': username, 'content': args['content'] });
       }
     })
   });
