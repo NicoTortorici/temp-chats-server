@@ -1,16 +1,23 @@
-const express = require('express');
-const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const port = process.env.PORT || 3000;
+const httpServer = require('http').createServer()
+const socketIO = require('socket.io')(httpServer)
 
+socketIO.on('connection', function (client) {
+  console.log('Connected...', client.id);
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hello world</h1>');
-});
+//listens when a user is disconnected from the server
+  client.on('disconnect', function () {
+    console.log('Disconnected...', client.id);
+  })
 
+//listens when there's an error detected and logs the error on the console
+  client.on('error', function (err) {
+    console.log('Error detected', client.id);
+    console.log(err);
+  })
+})
 
-
-server.listen(port, () => {
-  console.log('listening on *:' + port);
+var port = process.env.PORT || 3000;
+httpServer.listen(port, function (err) {
+  if (err) console.log(err);
+  console.log('Listening on port', port);
 });
