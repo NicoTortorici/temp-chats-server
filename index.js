@@ -1,23 +1,12 @@
-const httpServer = require('http').createServer()
-const socketIO = require('socket.io')(httpServer)
+import WebSocket from 'ws';
 
-socketIO.on('connection', function (client) {
-  console.log('Connected...', client.id);
+const ws = new WebSocket('ws://localhost');
 
-//listens when a user is disconnected from the server
-  client.on('disconnect', function () {
-    console.log('Disconnected...', client.id);
-  })
+ws.on('open', function open() {
+  console.log('connection open');
+  ws.send('something');
+});
 
-//listens when there's an error detected and logs the error on the console
-  client.on('error', function (err) {
-    console.log('Error detected', client.id);
-    console.log(err);
-  })
-})
-
-var port = process.env.PORT || 3000;
-httpServer.listen(port, function (err) {
-  if (err) console.log(err);
-  console.log('Listening on port', port);
+ws.on('message', function message(data) {
+  console.log('received: %s', data);
 });
