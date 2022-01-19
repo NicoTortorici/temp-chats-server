@@ -13,4 +13,4 @@ io.on('connection',socket => {
     console.log('a user connected'); 
     });
 
-server.listen();
+server.listen(3000);
