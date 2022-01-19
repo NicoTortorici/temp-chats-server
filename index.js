@@ -28,7 +28,7 @@ const server = express()
 
     socket.on('message', args => {
       if (receiver in sockets) {
-        sockets[receiver].emit('message', args['username'], args['content']);
+        sockets[receiver].emit('message', { 'sender': username, 'content': args['content'] });
       }
     })
   });
