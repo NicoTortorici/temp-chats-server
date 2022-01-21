@@ -29,7 +29,7 @@ const server = express()
 
       console.log('User logged in: ' + name);
 
-      socket.emit('ok');
+      socket.emit('login', 'ok');
     });
 
     socket.on('message', args => {
