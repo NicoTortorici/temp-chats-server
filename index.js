@@ -18,13 +18,18 @@ const server = express()
     console.log('Client connected');
     socket.on('disconnect', () => console.log('Client disconnected'));
 
-    socket.on('login', (name, ack) => {
+    socket.on('login', (name) => {
+      if (name in sockets) {
+        socket.emit('login', 'Name already in use.');
+        return;
+      }
+
       sockets[name] = socket;
       username = name;
 
       console.log('User logged in: ' + name);
 
-      ack('ok');
+      socket.emit('ok');
     });
 
     socket.on('message', args => {
