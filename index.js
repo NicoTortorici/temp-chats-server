@@ -17,8 +17,11 @@ const server = express()
 
     console.log('Client connected');
     socket.on('disconnect', () => {
-      if (username in sockets)
+      console.log(username + ' disconnected')
+      if (username in sockets) {
+        console.log('Loggin ' + username + ' out.');
         delete sockets[username];
+      }
     });
 
     socket.on('login', (name) => {
